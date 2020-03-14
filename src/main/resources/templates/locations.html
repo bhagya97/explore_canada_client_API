@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+ <head>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+              integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+              integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+                crossorigin="anonymous"></script>
+    </head>
+
+	<body>	
+ 
+ 		<div th:replace="fragments/header :: header"></div>
+    
+    	<div layout:fragment="content"></div>    
+	<div sec:authorize="isAuthenticated()">
+       <h4 th:inline="text">EmailID: [[${#httpServletRequest.remoteUser}]]</h4>
+      </div>
+      <div class="mybutton">
+      	 
+	</div>
+	
+	
+	<form action="#" th:action="@{/api/locations/places}" method="POST">
+			<input type="text" name="search" placeholder="Search Places">
+			<button type = "submit">Submit</button>
+		</form>
+	
+	<div>
+  	<p> Choose a place: </p>
+  		<table style = "width:100%">
+			<tr th:each="location: ${locations}">
+			<td> <img alt="Images"  th:src="${location.url}" width="200px" 	height="200px"/></td>
+					<td> <label th:text="${location.location}"> location </label> </td>
+					<td> <label th:text="${location.place}"> Place </label> </td>
+					<td> <label th:text="${location.name}"> Name </label> </td>	
+					<td> <button type="submit" value="Book" style="float: right;" th:onclick="/bookingpage.html"> Book </button> </td>
+			
+			</table>
+  		
+	</div>
+		<div th:replace="fragments/footer :: footer"></div>
+	
+	</body>
+	
+</html>
+
