@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <title>Explore Canada</title>
+
+    <div th:replace="fragments/header :: header-css"/>
+
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+
+    <div class="starter-template">
+        <h1>Welcome to explore canada</h1>
+        <div sec:authorize="isAuthenticated()">
+            <div th:if="${userInfo.userFirstName}">
+                <table>
+                    <tr>
+                        <td th:text="${userInfo.userFirstName}"></td>
+                        <td th:text="${userInfo.userLastName}"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <!--
+        <h2>1. Visit <a th:href="@{/admin}">Admin page (Spring Security protected, Need Admin Role)</a></h2>
+        <h2>2. Visit <a th:href="@{/user}">User page (Spring Security protected, Need User Role)</a></h2>
+        <h2>3. Visit <a th:href="@{/about}">Normal page</a></h2>
+        -->
+        <h3> Already a member <a th:href="@{/login}">visit login page</a></h3>
+        <h3> Not registered yet <a th:href="@{/signup}">visit registration page.</a></h3>
+    </div>
+
+</div>
+<!-- /.container -->
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>
