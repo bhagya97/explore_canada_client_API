@@ -9,8 +9,20 @@
 <div th:replace="fragments/header :: header"/>
 
 <div class="container">
-
-    <div class="row" style="margin-top:20px">
+    <div class="container text-info text-center" th:if="${errorMessage}">
+        <h4>Messages</h4>
+        <br/>
+        <div th:each="msg : ${errorMessage}">
+            <div th:if="${level == 'ERROR'}">
+                <span class="text-center text-danger" th:text="${msg}"></span>
+            </div>
+            <div th:if="${level == 'INFO'}">
+                <span class="text-center text-success" th:text="${msg}"></span>
+            </div>
+        </div>
+        <br/>
+    </div>
+    <div class="container">
         <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
             <form th:action="@{/login}" method="post">
                 <fieldset>
@@ -28,20 +40,18 @@
                     </div>
 
                     <div class="form-group">
+                        <label>Username : </label>
                         <input type="text" name="username" id="username" class="form-control input-lg"
                                placeholder="UserName" required="true" autofocus="true"/>
-                    </div>
-                    <div class="form-group">
+                        <label>Password : </label>
                         <input type="password" name="password" id="password" class="form-control input-lg"
                                placeholder="Password" required="true"/>
                     </div>
-
-                    <div class="row">
-                        <div class="col-xs-6 col-sm-6 col-md-6">
-                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign In"/>
-                        </div>
-                        <div class="col-xs-6 col-sm-6 col-md-6">
-                        </div>
+                    <div>
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
+                    </div>
+                    <div>
+                        <h4 class="text-center"><a href="/signup">Create an account</a></h4>
                     </div>
                 </fieldset>
             </form>
@@ -51,6 +61,5 @@
 </div>
 
 <div th:replace="fragments/footer :: footer"/>
-
 </body>
 </html>

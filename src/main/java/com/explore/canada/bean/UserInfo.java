@@ -1,4 +1,8 @@
 package com.explore.canada.bean;
+import com.explore.canada.configuration.Config;
+import com.explore.canada.service.LoginService;
+import com.explore.canada.service.RegistrationService;
+
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -79,10 +83,12 @@ public class UserInfo {
     public boolean registerUser(UserInfo userInfo)
     {
         boolean success = false;
-        String rawPassword = userPassword;
+        RegistrationService registrationService = Config.getInstance().getRegistrationService();
         try {
-           //TO SO USER REGISTRATION
-            success = true;
+            UserInfo u = registrationService.registerUser(userInfo);
+            if(u != null) {
+                success = true;
+            }
         }
         catch (Exception genericException){
             //logger.error(genericException);
@@ -93,8 +99,9 @@ public class UserInfo {
 
     public UserInfo loadUserByEmailId(String emailId, UserInfo userInfo)
     {
+        LoginService loginService = Config.getInstance().getLoginService();
         try {
-                //userInfo = userDb.loadUserByEmail(emailId,this);
+                userInfo = loginService.loadUserByEmailId(emailId);
         }
         catch (Exception genericException){
             //logger.error(genericException);

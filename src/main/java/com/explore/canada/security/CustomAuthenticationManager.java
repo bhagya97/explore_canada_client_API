@@ -1,6 +1,8 @@
 package com.explore.canada.security;
 import com.explore.canada.bean.ServiceEndPoint;
 import com.explore.canada.bean.UserInfo;
+import com.explore.canada.configuration.Config;
+import com.explore.canada.service.LoginService;
 import com.explore.canada.service.RestServiceClient;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -18,14 +20,14 @@ import java.util.Map;
 
 public class CustomAuthenticationManager implements AuthenticationManager
 {
-	private static final String USER_EMAIL = "email";
-	private static final String USER_PASSWORD = "password";
+	private static final String ADMIN = "ADMIN";
+	private static final String USER = "USER";
 
 	private Authentication grantAdminRole(UserInfo u, Authentication authentication) throws AuthenticationException
 	{
 		// Grant ADMIN rights system-wide, this is used to protect controller mappings.
 		List<GrantedAuthority> rights = new ArrayList<GrantedAuthority>();
-		rights.add(new SimpleGrantedAuthority("ADMIN"));
+		rights.add(new SimpleGrantedAuthority(ADMIN));
 		// Return valid authentication token.
 		UsernamePasswordAuthenticationToken token;
 		token = new UsernamePasswordAuthenticationToken(authentication.getPrincipal(),
@@ -47,20 +49,18 @@ public class CustomAuthenticationManager implements AuthenticationManager
 		return token;
 	}
 
-	// Authenticate against our database using the input banner ID and password.
+	// Authenticate against our database using the input UserID and password.
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		String userId = authentication.getPrincipal().toString();
 		String password = authentication.getCredentials().toString();
+		UserInfo userAuth = Config.getInstance().getUserAuth();
+		userAuth.setUserEmail(userId);
+		userAuth.setUserPassword(password);
+		LoginService loginService = Config.getInstance().getLoginService();
 		UserInfo userInfo;
-		String url = ServiceEndPoint.LOGIN_USER_SERVICE_URL;
-		RestServiceClient serviceClient = new RestServiceClient();
 		try{
-			Map<String,String> parameters = new HashMap<String,String>();
-			parameters.put(USER_EMAIL,userId);
-			parameters.put(USER_PASSWORD, password);
-			serviceClient.makeParameterizedPostRequest(url,parameters);
-			userInfo = serviceClient.getUserInfo();
+			userInfo = loginService.authenticateUser(userId,password);
 		}
 		catch (Exception e)
 		{

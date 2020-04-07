@@ -1,7 +1,5 @@
 package com.explore.canada.security;
-import com.explore.canada.bean.ServiceEndPoint;
 import com.explore.canada.bean.UserInfo;
-import com.explore.canada.service.RestServiceClient;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +17,7 @@ public class SignupController
 	private final String FIRST_NAME = "firstName";
 	private final String LAST_NAME = "lastName";
 	private final String DATE_OF_BIRTH = "dateOfBirth";
+	private final String ERROR_MESSAGE = "errorMessage";
 	
 	@GetMapping("/signup")
 	public String displaySignup(Model model)
@@ -36,7 +35,7 @@ public class SignupController
    	@RequestParam(name = DATE_OF_BIRTH) String dateOfBirth)
 	{
 		UserInfo u;
-		RestServiceClient client = null;
+		boolean success = false;
 		if (UserInfo.isEmailValid(email) &&
 				UserInfo.isFirstNameValid(firstName) &&
 				UserInfo.isLastNameValid(lastName) &&
@@ -48,20 +47,29 @@ public class SignupController
 			u.setUserFirstName(firstName);
 			u.setUserLastName(lastName);
 			u.setUserEmail(email);
-			client = new RestServiceClient();
-			client.makePostRequest(ServiceEndPoint.REGISTER_USER_SERVICE_URL,u);
+			u.setUserDateOfBirth(dateOfBirth);
+			success = u.registerUser(u);
 		}
 		ModelAndView m;
-		if (client.getUserInfo() != null)
+		if (success)
 		{
 			// This is lame, I will improve this with auto-signin for M2.
 			m = new ModelAndView("login");
+			m.addObject(ERROR_MESSAGE,
+					String.format("Successfully registered user '%s' with email '%s'",
+							firstName + " " + lastName,
+							email));
+			m.addObject("level","INFO");
 		}
 		else
 		{
 			// Something wrong with the input data.
 			m = new ModelAndView("signup");
-			//m.addObject(ErrorMessage.ERROR_LABEL, u.getFailureResults());
+			m.addObject(ERROR_MESSAGE,
+					String.format("Failed to register user '%s' with email '%s'",
+					firstName + " " + lastName,
+					email));
+			m.addObject("level","ERROR");
 		}
 		return m;
 	}

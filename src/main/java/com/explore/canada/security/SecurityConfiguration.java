@@ -3,6 +3,7 @@ package com.explore.canada.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,7 +26,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
    public void configure(WebSecurity web) throws Exception
 	{
    		web.ignoring().antMatchers("/resources/**");
-   }
+    }
 
 	@Autowired
 	private AccessDeniedHandler accessDeniedHandler;
@@ -38,18 +39,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 
 		http.csrf().disable()
 				.authorizeRequests()
-				//.antMatchers("/", "/home", "/about").permitAll()
-				.antMatchers("/", "/about").permitAll()
+				.antMatchers("/", "/**").permitAll()
+				.antMatchers("/home/**").permitAll()
+				.antMatchers("/static/**").permitAll()
 				.antMatchers("/public/**", "/**").permitAll()
 				.antMatchers("/admin/**").hasRole("ADMIN")
-				//.antMatchers("/user/**").hasRole("USER")
+				.antMatchers("/user/**").hasRole("USER")
 				.anyRequest().authenticated()
 				.and()
 				.formLogin()
 				.loginPage("/login")
+				.defaultSuccessUrl("/onetimepassword",true)
+				.failureUrl("/login?error=true")
 				.permitAll()
 				.and()
 				.logout()
+				.logoutSuccessUrl("/login")
+				.invalidateHttpSession(true)
+				.deleteCookies("JSESSIONID")
 				.permitAll()
 				.and()
 				.exceptionHandling().accessDeniedHandler(accessDeniedHandler);
@@ -60,6 +67,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 	protected AuthenticationManager authenticationManager() throws Exception
 	{	
 		return new CustomAuthenticationManager();
-		
 	}
 }

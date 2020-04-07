@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <title>Explore Canada</title>
+
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="booking-seats">
+    <h2 style="text-align:center;">Booking seats...</h2>
+    <div class="loader">
+    </div>
+</div>
+<div class="booking-success">
+    <p>
+    <h4 class="text-success">Success!</h4>
+    <h4 class="text-success"> Enjoy your journey!</h4>
+    </p>
+</div>
+<!-- /.container -->
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

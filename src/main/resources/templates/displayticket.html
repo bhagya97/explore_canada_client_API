@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Explore Canada - View Ticket</title>
+	<div th:replace="fragments/header :: header-css">  </div>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>  </div>
+<h1>Here is your ticket information </h1>
+<br/>
+<!--/*@thymesVar id="errorMessage" type=""*/-->
+<div th:if="${errorMessage}">
+	<h4>Failures</h4>
+	<br/>
+	<table>
+		<tr th:each="msg : ${errorMessage}">
+			<td>
+				<span th:text="${msg}"></span>
+			</td>
+		</tr>
+	</table>
+	<br/>
+</div>
+	<table id="ticket" th:if="${ticketInfo}">
+		<tr>
+            <th> Company </th>
+            <td th:text="${ticketInfo.company}"></td>
+       	</tr>
+       	<tr>
+            <th> Source </th>
+            <td th:text="${ticketInfo.source}"></td>
+       	</tr>
+       	<tr>
+            <th> Destination </th>
+            <td th:text="${ticketInfo.destination}"></td></td>
+       	</tr>
+       	<tr>
+            <th> Departure Time </th>
+            <td th:text="${ticketInfo.departureTime}"></td>
+        </tr>
+        <tr>
+            <th> Arrival Time </th>
+            <td th:text="${ticketInfo.arrivalTime}"></td>
+        </tr>
+        <tr> 
+        	<th> Departure Date </th>
+            <td th:text="${ticketInfo.departureDate}"></td>
+       	</tr>
+        <tr>
+            <th> Arrival Date </th>
+            <td th:text="${ticketInfo.arrivalDate}"></td>
+        </tr>
+        <tr>
+            <th> Total Fare </th>
+            <td th:text="${ticketInfo.total}"></td>
+        </tr>
+	</table>
+       <div th:replace="fragments/footer :: footer" > </div>
+    </body>
+</html>

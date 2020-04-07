@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Explore Canada - Payment page</title>
+	<div th:replace="fragments/header :: header-css">  </div>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>  </div>
+<h1>Please enter your card details to continue </h1>
+<br/>
+<!--/*@thymesVar id="errorMessage" type=""*/-->
+<div th:if="${errorMessage}">
+	<h4>Failures</h4>
+	<br/>
+	<table>
+		<tr th:each="msg : ${errorMessage}">
+			<td>
+				<span th:text="${msg}"></span>
+			</td>
+		</tr>
+	</table>
+	<br/>
+</div>
+<form th:action="@{/payment}" method="post">
+	<div>
+		<label>Name of the Card Holder: </label>
+		<input type="text" name="name"/>
+	</div>
+	<div>
+		<label>Card Number:</label>
+		<input type="text" name="card_no"> </label>
+	</div>
+	<div>
+		<label>CVV: </label>
+		<input type="text" name="cvv"/>
+	</div>
+	<div>
+		<label>Expiry month: </label>
+		<input type="text" name="expiry_month"/>
+	</div>
+	<div>
+		<label>Expiry year: </label>
+		<input type="text" name="expiry_year"/>
+	</div>
+	
+	<div><input type="submit" Value="Submit" style="background:blue;text-color:white"></div>
+</form>
+<br/>
+
+<div th:replace="fragments/footer :: footer" > </div>
+
+</body>
+</html>

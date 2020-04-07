@@ -8,18 +8,13 @@
 
     <div class="container">
 
-        <footer>
-            <!-- this is footer -->
-            &copy; www.explore-canada.ca
-            <span sec:authorize="isAuthenticated()">
-                | Logged user: <span sec:authentication="name"></span> |
-                Roles: <span sec:authentication="principal.authorities"></span> |
-                <a th:href="@{/logout}">Sign Out</a>
-            </span>
-
-            <script type="text/javascript"
-                    src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+        <footer class="footer navbar-inverse navbar-fixed-bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5"></div>
+                    <div class="col-md-4"><p class="text-muted">&copy; www.explore-canada.ca</p></div>
+                </div>
+            </div>
         </footer>
     </div>
 

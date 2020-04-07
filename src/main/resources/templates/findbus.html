@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<div th:replace="fragments/header :: header-css">
+<head>
+	<title>Explore Canada - Find Bus page</title>
+	 
+</head>
+</div>
+<body>
+
+<div th:replace="fragments/header :: header"/>  </div>
+
+<div class="container">
+	<ul class="nav navbar-nav navbar-right">
+		<div th:if="!${userInfo}">
+			<li class="nav-item" sec:authorize="isAnonymous()">
+				<a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+			</li>
+			<li class="nav-item" sec:authorize="isAnonymous()">
+				<a th:href="@{/signup}"><span class="glyphicon glyphicon-registration-mark"></span> Register</a>
+			</li>
+		</div>
+		<div th:if="${userInfo}">
+			<li class="nav-item" sec:authorize="isAuthenticated()">
+				<a th:href="@{/logout}"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+			</li>
+		</div>
+	</ul>
+</div>
+
+<h1>Select source and destination </h1>
+<br/>
+<!--/*@thymesVar id="errorMessage" type=""*/-->
+<div th:if="${errorMessage}">
+	<h4>Failures</h4>
+	<br/>
+	<table>
+		<tr th:each="msg : ${errorMessage}">
+			<td>
+				<span th:text="${msg}"></span>
+			</td>
+		</tr>
+	</table>
+	<br/>
+</div>
+
+<div class="container">
+	<h3>Select source for your journey: </h3>
+	<div class="movie-cards">
+		<div class="movie-card">
+			<img class="card" th:src="${placeurl}" height="250px" width="200px"/>
+			<div class="card">
+				<h5 style="font-weight:600" class="card" th:text="${placename}"></h5>
+				<h5 style="font-weight:600" class="card" th:text="${placeLocation}"></h5>
+				<label class="text-info">Select source: </label>
+				<input type="text" class="card" id="source" name="source"/>
+
+				<div>
+					<button class="btn btn-primary btn-sm btn-primary"
+							th:data-placeid="${placeid}"
+							th:data-placename="${placename}"
+							th:data-location="${placeLocation}"
+							th:data-placeurl="${placeurl}"
+							th:onclick="|checkBusAvailability(
+                            this.getAttribute('data-placeid'),
+                            this.getAttribute('data-placename'),
+                            this.getAttribute('data-location'),
+                            this.getAttribute('data-placeurl'),
+                            'checkAvailability'
+                            )|">
+						Check Availability
+					</button>
+				</div>
+				<td>
+					<table id="busList" class="table table-bordered table-striped">
+						<thead>
+						<tr>
+							<th> Company </th>
+							<th> Source </th>
+							<th> Destination </th>
+							<th> Departure Time </th>
+							<th> Arrival Time </th>
+							<th> Departure Date </th>
+							<th> Arrival Date </th>
+							<th> Fare (Adult) </th>
+							<th> Fare (Child) </th>
+							<th> Available Seats </th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr>
+							<td	colspan="2">
+								Please select a source for your journey
+							</td>
+						</tr>
+						<tr th:if="${#arrays.isEmpty(ticketInfos)}">
+							<td colspan="2">
+								Sorry! No Buses available right now.<br> Try Changing the Source
+							</td>
+						</tr>
+						<tr th:each="ticket : ${ticketInfos}">
+							<td><span th:text="${ticket.company}"> Company </span></td>
+							<td><span th:text="${ticket.source}"> Source </span></td>
+							<td><span th:text="${ticket.destination}"> Destination </span></td>
+							<td><span th:text="${ticket.departureTime}"> Departure Time </span></td>
+							<td><span th:text="${ticket.arrivalTime}"> Arrival Time </span></td>
+							<td><span th:text="${ticket.departureDate}"> Departure Date </span></td>
+							<td><span th:text="${ticket.arrivalDate}"> Arrival Date </span></td>
+							<td><span th:text="${ticket.adult_fare}"> Fare (Adult) </span></td>
+							<td><span th:text="${ticket.child_fare}"> Fare (Child) </span></td>
+							<td><span th:text="${ticket.availableSeats}"> Available Seats </span></td>
+							<td>
+								<button class="btn btn-primary btn-sm btn-primary"
+										th:data-busid="${ticket.busId}"
+										th:onclick="|bookTicket(
+										this.getAttribute('data-busid')
+										)|">
+										Book Ticket
+								</button>
+							</td>
+						</tr>
+						</tbody>
+
+					</table>
+					<h5> Passenger Information </h5>
+					<label class="text-info">
+						No of adults:
+					</label>
+					<input type="text" id="adults" name="adults"><br>
+					<label class="text-info">
+						No of children:
+					</label>
+					<input type="text" id="children" name="children"><br>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<br/>
+
+<div th:replace="fragments/footer :: footer" > </div>
+
+</body>
+</html>

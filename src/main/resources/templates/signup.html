@@ -6,32 +6,62 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header"/>
-<h1>Welcome to explore canada, please enter your information:</h1>
 <br/>
-<!--/*@thymesVar id="errorMessage" type=""*/-->
-<div th:if="${errorMessage}">
-	<h4>Failures</h4>
+
+<div class="container text-info text-center" th:if="${errorMessage}">
+	<h4>Messages</h4>
 	<br/>
-	<table>
-		<tr th:each="msg : ${errorMessage}">
-			<td>
-				<span th:text="${msg}"></span>
-			</td>
-		</tr>
-	</table>
+	<div th:each="msg : ${errorMessage}">
+		<span class="text-center text-danger" th:text="${msg}"></span>
+	</div>
 	<br/>
 </div>
-<form th:action="@{/signup}" method="post">
-	<div><label>First Name : <input type="text" name="firstName"/> </label></div>
-	<div><label>Last Name : <input type="text" name="lastName"/> </label></div>
-	<div><label>Email : <input type="text" name="email"/> </label></div>
-	<div><label>Password: <input type="password" name="password"/> </label></div>
-	<div><label>Password (Confirmation): <input type="password" name="passwordConfirmation"/> </label></div>
-	<div><label>Date of Birth : <input type="text" name="dateOfBirth"/> </label></div>
-	<div><input type="submit" value="Create Account"/></div>
-</form>
+<div class="container">
+	<div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+		<form th:action="@{/signup}" method="post">
+			<fieldset>
+				<h1>Welcome to explore canada, please enter your information:</h1>
+				<div class="form-group">
+					<label>First Name : </label>
+					<input type="text" name="firstName" class="form-control input-lg" required="true"/>
+					<label>Last Name : </label>
+					<input type="text" name="lastName" class="form-control input-lg"/>
+					<label>Email : </label>
+					<input type="text" name="email" class="form-control input-lg" required="true"/>
+					<label>Password : </label>
+					<input type="password" name="password" class="form-control input-lg" required="true"/>
+					<label>Password (Confirmation) :</label>
+					<input type="password" name="passwordConfirmation" class="form-control input-lg" required="true"/>
+					<label class="form-group-lg">
+							Date of Birth :
+					</label>
+					<span class="input-lg" id="basic-addon2">
+							<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+					</span>
+					<input type="text" class="input-lg datepicker" name="dateOfBirth" aria-describedby="basic-addon1" width="100px"/>
+					<!--
+					<div class="input-group">
+						<span class="input-group-addon" id="basic-end-date--label">
+							Date of Birth :
+						</span>
+						<span class="input-group-addon" id="basic-addon2">
+							<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+						</span>
+						<input type="text" class="input-lg datepicker" id="dateOfBirth" aria-describedby="basic-addon1" width="100px"/>
+					</div>
+					-->
+				</div>
+				<div>
+					<input type="submit" class="btn btn-lg btn-primary btn-block" value="Create Account"/>
+				</div>
+				<div>
+					<a th:href="@{/login}">Are you an existing user? Click here to log in!</a>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>
 <br/>
-<a th:href="@{/login}">Are you an existing user? Click here to log in!</a>
-<div th:replace="fragments/footer :: footer"/>
+<div class="row" style="margin-top:20px" th:replace="fragments/footer :: footer"/>
 </body>
 </html>

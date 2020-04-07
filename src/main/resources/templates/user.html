@@ -8,23 +8,23 @@
 <div th:replace="fragments/header :: header"/>
 
 <div class="container">
-
-    <div class="starter-template">
-        <h1>User page (Explore Canada)</h1>
-
-        <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
-        <div sec:authorize="isAuthenticated()">
-            <h3 th:text="${userInfo.userFirstName} ${userInfo.userLastName}"/>
+    <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+        <div class="starter-template">
+            <h1>User page (Explore Canada)</h1>
+            <div th:if="${userInfo}">
+                <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+                <div sec:authorize="isAuthenticated()">
+                    <h4 th:text="${userInfo.userFirstName}"> </h4> <h4 th:text="${userInfo.userLastName}"/>
+                </div>
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" value="Sign Out"/>
+                </form>
+            </div>
         </div>
-        <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Sign Out"/>
-        </form>
-
     </div>
-
 </div>
 <!-- /.container -->
-<div th:replace="fragments/footer :: footer"/>
+<div class="row" style="margin-top:20px" th:replace="fragments/footer :: footer"/>
 
 </body>
 </html>
